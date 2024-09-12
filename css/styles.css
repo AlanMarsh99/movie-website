@@ -28,4 +28,75 @@ body {
   button:hover {
     background-color: #0056b3;
   }
+
+/* Parallax background */
+.features-section {
+    position: relative;
+    background-color: transparent;
+  }
+  
+  .parallax-bg {
+    background-image: url('https://your-image-url.com/parallax-bg.jpg'); /* Replace with your actual image URL */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    opacity: 0.5; /* Adjust this to make it more or less visible */
+  }
+  
+  /* Style for features */
+  .feature {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .feature img {
+    max-width: 100px;
+    margin-bottom: 20px;
+    border-radius: 50%; /* Optional: Makes the images round */
+    transition: transform 0.3s ease;
+  }
+  
+  .feature img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+  }
+  
+  .section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: white;
+  }
+  
+  p {
+    color: white;
+  }
+  
+  .feature h3 {
+    color: #fff;
+    margin-top: 15px;
+  }
+  
+  .container {
+    position: relative;
+    z-index: 2;
+    padding: 80px 20px;
+  }
+  
+  .row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .feature-image {
+    max-width: 100px;
+    border-radius: 10px; /* Slight rounding for images */
+  }
+  
   
