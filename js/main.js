@@ -1,5 +1,5 @@
 // Initialise the map and set view to default location (e.g., London)
-let map = L.map('map').setView([51.505, -0.09], 13);
+let map = L.map('map').setView([53.35, -6.26], 13);
 
 // Add the OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
