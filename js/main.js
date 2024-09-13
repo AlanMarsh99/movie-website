@@ -1,11 +1,32 @@
-// Initialise the map and set view to default location (e.g., London)
+// Initialise the map and set view to default location (e.g., Dublin)
 let map = L.map('map').setView([53.35, -6.26], 11);
 
-// Add the OpenStreetMap tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// Add Street View Layer (OpenStreetMap)
+let streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+
+// Add Satellite View Layer (OpenTopoMap)
+let satelliteLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '© OpenTopoMap'
+});
+
+// CartoDB Positron (Light Themed Map)
+let cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.carto.com/">CARTO</a>'
+});
+
+// CartoDB Dark Matter (Dark Themed Map)
+let cartoDarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.carto.com/">CARTO</a>'
+});
+
+// Esri World Imagery (Satellite Imagery)
+let esriWorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
 
 // Layer group to manage markers
 let markerGroup = L.layerGroup().addTo(map);
@@ -87,6 +108,15 @@ function displayRandomCoordinates(lat, lon, word) {
   // Add marker for random coordinates
   addMarker(randomCoords.latitude, randomCoords.longitude, `Destination (influenced by "${word}")`);
 }
+
+// Feature: Add Layer Control for multiple views
+L.control.layers({
+  "Street View": streetLayer,
+  "Satellite View": satelliteLayer,
+  "Light": cartoPositron,
+  "Dark": cartoDarkMatter,
+  "Colour": esriWorldImagery
+}).addTo(map);
 
 // Error handling for geolocation
 function showError(error) {
