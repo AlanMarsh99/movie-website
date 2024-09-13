@@ -3,29 +3,27 @@ let map = L.map('map').setView([53.35, -6.26], 11);
 
 // Add Street View Layer (OpenStreetMap)
 let streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '© OpenStreetMap contributors'
+  maxZoom: 19
 }).addTo(map);
 
 // Add Satellite View Layer (OpenTopoMap)
 let satelliteLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '© OpenTopoMap'
+  maxZoom: 19
 });
 
 // CartoDB Positron (Light Themed Map)
 let cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://www.carto.com/">CARTO</a>'
+  maxZoom: 19
 });
 
 // CartoDB Dark Matter (Dark Themed Map)
 let cartoDarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://www.carto.com/">CARTO</a>'
+  maxZoom: 19
 });
 
 // Esri World Imagery (Satellite Imagery)
 let esriWorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-  attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+  maxZoom: 19
 });
 
 // Layer group to manage markers
