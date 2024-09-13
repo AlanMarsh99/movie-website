@@ -1,11 +1,14 @@
-// Initialise the map and set view to default location (e.g., London)
-let map = L.map('map').setView([51.505, -0.09], 13);
+// Initialise the map and set view to default location (e.g., Dublin)
+let map = L.map('map').setView([53.35, -6.26], 13);
 
 // Add the OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+
+// Global variable to store user's location
+let userLocation = { latitude: null, longitude: null };
 
 // Function to add a marker to the map
 function addMarker(lat, lon, popupText) {
@@ -23,20 +26,24 @@ function getLocation() {
   }
 }
 
-// Function to display the user's location and generate random coordinates
+// Function to display the user's location and store it globally for reuse
 function showPosition(position) {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
   
+  // Store user's original location for future use
+  userLocation.latitude = lat;
+  userLocation.longitude = lon;
+
   // Update location display
   document.getElementById("location").innerHTML = `Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)}`;
   
   // Set map view to the user's location
   map.setView([lat, lon], 13);
 
-  // Get the word input and generate random coordinates
+  // Get the word input and generate random coordinates based on user's location
   const word = document.getElementById('word').value;
-  displayRandomCoordinates(lat, lon, word);
+  displayRandomCoordinates(userLocation.latitude, userLocation.longitude, word);
 }
 
 // Function to generate random coordinates within a given radius (in meters) and using the word as an influence
@@ -99,5 +106,5 @@ function showError(error) {
 // Handle form submission
 document.getElementById("generator-form").addEventListener("submit", function(event) {
   event.preventDefault(); // Prevent form from refreshing the page
-  getLocation(); // Fetch the user's location when the form is submitted
+  getLocation(); // Fetch the user's location each time the form is submitted
 });
