@@ -34,9 +34,9 @@ function addMarker(lat, lon) {
   // Clear all existing markers
   markerGroup.clearLayers();
   
-  // Add a new marker with a popup that says "Your Next Destination"
+  // Add a new marker with a popup that says "Your next destination"
   const marker = L.marker([lat, lon])
-    .bindPopup("Your Next Destination") // Popup instead of tooltip
+    .bindPopup("Your next destination") // Popup
     .addTo(map);
 
   markerGroup.addLayer(marker);
