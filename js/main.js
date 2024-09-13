@@ -75,7 +75,7 @@ function displayRandomCoordinates(lat, lon, word) {
   document.getElementById("coordinates").innerHTML = `Destination: Latitude: ${randomCoords.latitude.toFixed(6)}, Longitude: ${randomCoords.longitude.toFixed(6)}`;
   
   // Add marker for random coordinates
-  addMarker(randomCoords.latitude, randomCoords.longitude, `${word}`);
+  addMarker(randomCoords.latitude, randomCoords.longitude, `Destination (influenced by "${word}")`);
 }
 
 // Error handling for geolocation
