@@ -1,5 +1,5 @@
-// Initialise the map and set view to default location
-let map = L.map('map').setView([51.505, -0.09], 13); // Default to London coordinates
+// Initialise the map and set view to default location (e.g., London)
+let map = L.map('map').setView([51.505, -0.09], 13);
 
 // Add the OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -29,23 +29,21 @@ function showPosition(position) {
   const lon = position.coords.longitude;
   
   // Update location display
-  document.getElementById("location").innerHTML = `Latitude: ${lat}, Longitude: ${lon}`;
+  document.getElementById("location").innerHTML = `Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)}`;
   
   // Set map view to the user's location
   map.setView([lat, lon], 13);
-  
-  // Add marker for user's location
-  addMarker(lat, lon, "Your Location");
 
-  // Generate and display random coordinates
-  displayRandomCoordinates(lat, lon);
+  // Get the word input and generate random coordinates
+  const word = document.getElementById('word').value;
+  displayRandomCoordinates(lat, lon, word);
 }
 
-// Function to generate random coordinates within a given radius (in meters)
-function getRandomCoordinates(lat, lon, radius) {
+// Function to generate random coordinates within a given radius (in meters) and using the word as an influence
+function getRandomCoordinates(lat, lon, radius, wordHash) {
   const r = radius / 111300; // Convert radius from meters to degrees
-  const u = Math.random();
-  const v = Math.random();
+  const u = (Math.random() + wordHash) % 1; // Use the word hash to influence randomness
+  const v = (Math.random() + wordHash) % 1;
   const w = r * Math.sqrt(u);
   const t = 2 * Math.PI * v;
   const newLat = w * Math.cos(t);
@@ -57,16 +55,27 @@ function getRandomCoordinates(lat, lon, radius) {
   return { latitude: finalLat, longitude: finalLon };
 }
 
+// Simple hash function to convert the word to a numeric value
+function hashWord(word) {
+  let hash = 0;
+  for (let i = 0; i < word.length; i++) {
+    hash = (hash << 5) - hash + word.charCodeAt(i);
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  return Math.abs(hash) % 1000 / 1000; // Normalize to a decimal between 0 and 1
+}
+
 // Function to display the generated random coordinates
-function displayRandomCoordinates(lat, lon) {
-  const radius = 1000; // Set radius to 1000 meters (1 km)
-  const randomCoords = getRandomCoordinates(lat, lon, radius);
+function displayRandomCoordinates(lat, lon, word) {
+  const radius = parseInt(document.getElementById('radius-range').value, 10); // Get radius from the form
+  const wordHash = hashWord(word); // Hash the word to influence randomness
+  const randomCoords = getRandomCoordinates(lat, lon, radius, wordHash);
   
-  // Update random coordinates display
-  document.getElementById("coordinates").innerHTML = `Latitude: ${randomCoords.latitude.toFixed(6)}, Longitude: ${randomCoords.longitude.toFixed(6)}`;
+  // Update destination display
+  document.getElementById("coordinates").innerHTML = `Destination: Latitude: ${randomCoords.latitude.toFixed(6)}, Longitude: ${randomCoords.longitude.toFixed(6)}`;
   
   // Add marker for random coordinates
-  addMarker(randomCoords.latitude, randomCoords.longitude, "Random Coordinates");
+  addMarker(randomCoords.latitude, randomCoords.longitude, `${word}`);
 }
 
 // Error handling for geolocation
@@ -88,7 +97,7 @@ function showError(error) {
 }
 
 // Handle form submission
-document.getElementById("word-form").addEventListener("submit", function(event) {
+document.getElementById("generator-form").addEventListener("submit", function(event) {
   event.preventDefault(); // Prevent form from refreshing the page
   getLocation(); // Fetch the user's location when the form is submitted
 });
