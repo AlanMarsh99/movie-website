@@ -29,13 +29,16 @@ let esriWorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/
 // Layer group to manage markers
 let markerGroup = L.layerGroup().addTo(map);
 
-// Function to add a marker to the map
-function addMarker(lat, lon, popupText) {
+// Function to add a marker to the map with a popup
+function addMarker(lat, lon) {
   // Clear all existing markers
   markerGroup.clearLayers();
   
-  // Add a new marker to the layer group
-  const marker = L.marker([lat, lon]).bindPopup(popupText).openPopup();
+  // Add a new marker with a popup that says "Your Next Destination"
+  const marker = L.marker([lat, lon])
+    .bindPopup("Your Next Destination") // Popup instead of tooltip
+    .addTo(map);
+
   markerGroup.addLayer(marker);
 }
 
@@ -60,9 +63,6 @@ function showPosition(position) {
   userLocation.latitude = lat;
   userLocation.longitude = lon;
 
-  // Update location display
-  document.getElementById("location").innerHTML = `Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)}`;
-  
   // Get the word input and generate random coordinates based on user's location
   const word = document.getElementById('word').value;
   displayRandomCoordinates(userLocation.latitude, userLocation.longitude, word);
@@ -103,8 +103,8 @@ function displayRandomCoordinates(lat, lon, word) {
   // Update destination display
   document.getElementById("coordinates").innerHTML = `Destination: Latitude: ${randomCoords.latitude.toFixed(6)}, Longitude: ${randomCoords.longitude.toFixed(6)}`;
   
-  // Add marker for random coordinates
-  addMarker(randomCoords.latitude, randomCoords.longitude, `Destination (influenced by "${word}")`);
+  // Add marker for random coordinates with tooltip
+  addMarker(randomCoords.latitude, randomCoords.longitude);
 }
 
 // Feature: Add Layer Control for multiple views
@@ -135,21 +135,6 @@ function showError(error) {
 }
 
 // Handle form submission
-document.getElementById("generator-form").addEventListener("submit", function(event) {
-  event.preventDefault(); // Prevent form from refreshing the page
-
-  // Get the word input
-  const word = document.getElementById('word').value;
-
-  // Check if the word is empty
-  if (!word.trim()) {
-    alert('Please provide a keyword to generate a location.');
-    return; // Stop further execution if the word is empty
-  }
-
-  getLocation(); // Fetch the user's location when the form is submitted
-});
-
 document.getElementById("generator-form").addEventListener("submit", function(event) {
   event.preventDefault(); // Prevent form from refreshing the page
 
