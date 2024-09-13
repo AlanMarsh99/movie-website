@@ -84,19 +84,24 @@
     </div>
 
     <!-- Coordinate Form -->
-    <form id="generator-form" class="mb-4">
-      <div class="input-group mb-3">
-        <input type="text" id="word" name="word" class="form-control" placeholder="Enter a keyword" aria-label="Keyword" aria-describedby="button-addon">
-      </div>
-      
-      <!-- Radius Selection -->
-      <div class="range-container">
-        <label for="radius-range" class="form-label">Select Radius (Meters): <span id="radius-value">100</span>m</label>
-        <input type="range" class="form-range" min="100" max="30000" step="10" id="radius-range" value="100">
-      </div>
+<form id="generator-form" class="mb-4">
+  <div class="input-group mb-3">
+    <!-- Updated input field to limit to alphabetic characters and spaces, with a maximum length of 30 characters -->
+    <input type="text" id="word" name="word" class="form-control" placeholder="Enter a keyword" 
+           aria-label="Keyword" aria-describedby="button-addon" 
+           pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" 
+           maxlength="30" required>
+  </div>
+  
+  <!-- Radius Selection -->
+  <div class="range-container">
+    <label for="radius-range" class="form-label">Select Radius (Meters): <span id="radius-value">100</span>m</label>
+    <input type="range" class="form-range" min="100" max="30000" step="10" id="radius-range" value="100">
+  </div>
 
-      <button class="btn btn-custom mt-3" type="submit" id="button-addon">Begin</button>
-    </form>
+  <button class="btn btn-custom mt-3" type="submit" id="button-addon">Begin</button>
+</form>
+
 
     <!-- Map -->
     <div id="map"></div>

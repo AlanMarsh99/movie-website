@@ -1,5 +1,5 @@
-// Initialise the map and set view to default location (e.g., Dublin)
-let map = L.map('map').setView([53.35, -6.26], 13);
+// Initialise the map and set view to default location (e.g., London)
+let map = L.map('map').setView([51.505, -0.09], 13);
 
 // Add the OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -7,15 +7,21 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Global variable to store user's location
-let userLocation = { latitude: null, longitude: null };
+// Layer group to manage markers
+let markerGroup = L.layerGroup().addTo(map);
 
 // Function to add a marker to the map
 function addMarker(lat, lon, popupText) {
-  L.marker([lat, lon]).addTo(map)
-    .bindPopup(popupText)
-    .openPopup();
+  // Clear all existing markers
+  markerGroup.clearLayers();
+  
+  // Add a new marker to the layer group
+  const marker = L.marker([lat, lon]).bindPopup(popupText).openPopup();
+  markerGroup.addLayer(marker);
 }
+
+// Global variable to store user's location
+let userLocation = { latitude: null, longitude: null };
 
 // Function to get the user's location and display it on the map
 function getLocation() {
@@ -38,9 +44,6 @@ function showPosition(position) {
   // Update location display
   document.getElementById("location").innerHTML = `Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)}`;
   
-  // Set map view to the user's location
-  map.setView([lat, lon], 13);
-
   // Get the word input and generate random coordinates based on user's location
   const word = document.getElementById('word').value;
   displayRandomCoordinates(userLocation.latitude, userLocation.longitude, word);
@@ -106,5 +109,34 @@ function showError(error) {
 // Handle form submission
 document.getElementById("generator-form").addEventListener("submit", function(event) {
   event.preventDefault(); // Prevent form from refreshing the page
-  getLocation(); // Fetch the user's location each time the form is submitted
+
+  // Get the word input
+  const word = document.getElementById('word').value;
+
+  // Check if the word is empty
+  if (!word.trim()) {
+    alert('Please provide a keyword to generate a location.');
+    return; // Stop further execution if the word is empty
+  }
+
+  getLocation(); // Fetch the user's location when the form is submitted
+});
+
+document.getElementById("generator-form").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevent form from refreshing the page
+
+  // Get the word input
+  const word = document.getElementById('word').value;
+
+  // Check if the word is empty or contains invalid characters
+  const regex = /^[A-Za-z\s]+$/;
+  if (!word.trim()) {
+    alert('Please provide a keyword to generate a location.');
+    return; // Stop further execution if the word is empty
+  } else if (!regex.test(word)) {
+    alert('Only alphabetic characters and spaces are allowed.');
+    return; // Stop further execution if the word contains invalid characters
+  }
+
+  getLocation(); // Fetch the user's location when the form is submitted
 });
