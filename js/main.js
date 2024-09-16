@@ -48,8 +48,8 @@ let userLocation = { latitude: null, longitude: null };
 // Mapping of phrases to specific locations (keys in lower case)
 const phraseLocations = {
   "arcadian shepherd": { latitude: 53.2517056, longitude: -6.3303264 },
-  "swans nest": { latitude: 53.389811, longitude: -6.160821 },
-  "kccp": { latitude: 53.385433686837544, longitude: -6.159285306930543 }
+  "swans nest": { latitude: 53.3897656, longitude: -6.1593818 },
+  "kccp": { latitude: 53.3854004, longitude: -6.15451486 }
 };
 
 // Function to calculate distance between two coordinates (in meters)
@@ -136,7 +136,7 @@ function displayRandomCoordinates(lat, lon, word) {
     if (distance <= radius) {
       // Location is within radius
       // Update destination display
-      document.getElementById("coordinates").innerHTML = `Destination: Latitude: ${location.latitude.toFixed(6)}, Longitude: ${location.longitude.toFixed(6)}`;
+      document.getElementById("coordinates").innerHTML = `Destination: Latitude: ${location.latitude.toFixed(8)}, Longitude: ${location.longitude.toFixed(8)}`;
       
       // Add marker for the specific location
       addMarker(location.latitude, location.longitude);
@@ -153,7 +153,7 @@ function displayRandomCoordinates(lat, lon, word) {
   const randomCoords = getRandomCoordinates(lat, lon, radius, wordHash);
   
   // Update destination display
-  document.getElementById("coordinates").innerHTML = `Destination: Latitude: ${randomCoords.latitude.toFixed(6)}, Longitude: ${randomCoords.longitude.toFixed(6)}`;
+  document.getElementById("coordinates").innerHTML = `Destination: Latitude: ${randomCoords.latitude.toFixed(8)}, Longitude: ${randomCoords.longitude.toFixed(8)}`;
   
   // Add marker for random coordinates with tooltip
   addMarker(randomCoords.latitude, randomCoords.longitude);
