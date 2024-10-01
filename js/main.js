@@ -82,7 +82,7 @@ function getLocation(word) {
 }
 
 // Function to display the user's location and store it globally for reuse
-function showPosition(position, word) {
+async function showPosition(position, word) {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
   
@@ -91,7 +91,7 @@ function showPosition(position, word) {
   userLocation.longitude = lon;
 
   // Generate random coordinates based on user's location
-  displayRandomCoordinates(userLocation.latitude, userLocation.longitude, word);
+  await displayRandomCoordinates(userLocation.latitude, userLocation.longitude, word);
 }
 
 // Simple hash function to convert the word to a numeric value
@@ -121,7 +121,7 @@ function getRandomCoordinates(lat, lon, radius, wordHash) {
 }
 
 // Function to display the generated random coordinates
-function displayRandomCoordinates(lat, lon, word) {
+async function displayRandomCoordinates(lat, lon, word) {
   const radius = parseInt(document.getElementById('radius-range').value, 10); // Get radius from the form
 
   // Normalize word to lower case and trim whitespace
@@ -144,7 +144,7 @@ function displayRandomCoordinates(lat, lon, word) {
       // Center map on the specific location
       map.setView([location.latitude, location.longitude], 13);
       return; // Exit the function
-    } else {
+
     }
   }
   
@@ -173,20 +173,22 @@ L.control.layers({
 
 // Error handling for geolocation
 function showError(error) {
+  let message = '';
   switch (error.code) {
     case error.PERMISSION_DENIED:
-      document.getElementById("location").innerHTML = "User denied the request for Geolocation.";
+      message = "User denied the request for Geolocation.";
       break;
     case error.POSITION_UNAVAILABLE:
-      document.getElementById("location").innerHTML = "Location information is unavailable.";
+      message = "Location information is unavailable.";
       break;
     case error.TIMEOUT:
-      document.getElementById("location").innerHTML = "The request to get user location timed out.";
+      message = "The request to get user location timed out.";
       break;
     case error.UNKNOWN_ERROR:
-      document.getElementById("location").innerHTML = "An unknown error occurred.";
+      message = "An unknown error occurred.";
       break;
   }
+  alert(message);
 }
 
 // Handle form submission
